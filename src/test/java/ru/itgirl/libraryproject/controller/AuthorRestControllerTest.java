@@ -11,12 +11,15 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import ru.itgirl.libraryproject.dto.AuthorCreateDto;
 import ru.itgirl.libraryproject.dto.AuthorDto;
+import ru.itgirl.libraryproject.dto.BookDto;
 import ru.itgirl.libraryproject.model.Author;
+import ru.itgirl.libraryproject.model.Book;
 import ru.itgirl.libraryproject.repository.AuthorRepository;
 import ru.itgirl.libraryproject.service.AuthorServiceImpl;
 
-import java.util.Optional;
+import java.util.*;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -30,7 +33,7 @@ public class AuthorRestControllerTest {
     @Mock
     private AuthorRepository authorRepository;
 
-    @InjectMocks
+    @Mock
     private AuthorServiceImpl authorService;
     @Autowired
     private MockMvc mockMvc;
@@ -115,22 +118,27 @@ public class AuthorRestControllerTest {
     }
     @Test
     public void testCreateAuthor() throws Exception{
-        Author author = new Author();
-        author.setName("Фредерик");
-        author.setSurname("Бакман");
+        String name = "John2";
+        String surname = "Doe2";
+        Long id = 100L;
+        List<BookDto> booksDto = new ArrayList<>();
+        AuthorCreateDto authorCreateDto = new AuthorCreateDto(name, surname);
+        AuthorDto authorDto = new AuthorDto(id, name, surname, booksDto);
 
-        when(authorRepository.save(any())).thenReturn(true );
-        verify(authorRepository.save(author));
-        when(authorRepository.findAuthorByName(author.getName())).thenReturn(Optional.of(author));
+
+        when(authorService.createAuthor(authorCreateDto)).thenReturn(authorDto);
+        //when(authorRepository.findAuthorByName(authorCreateDto.getName())).thenReturn(Optional.of(author));
+        //verify(authorRepository).save(any());
+        //when(authorRepository.findAuthorByName(author.getName())).thenReturn(Optional.of(author));
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/author/create")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(this.mapper.writeValueAsString(author))
+                       .content(this.mapper.writeValueAsString(authorCreateDto))
                 )
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(author.getName()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.surname").value(author.getSurname()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(authorCreateDto.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.surname").value(authorCreateDto.getSurname()));
 
     }
 }
