@@ -7,29 +7,18 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import ru.itgirl.libraryproject.dto.AuthorCreateDto;
-import ru.itgirl.libraryproject.dto.AuthorDto;
 import ru.itgirl.libraryproject.dto.BookDto;
-import ru.itgirl.libraryproject.model.Author;
-import ru.itgirl.libraryproject.repository.AuthorRepository;
 import ru.itgirl.libraryproject.repository.BookRepository;
-import ru.itgirl.libraryproject.service.AuthorServiceImpl;
 import ru.itgirl.libraryproject.service.BookServiceImpl;
 
-import java.util.Optional;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
-public class BookRestControllerTest {
+public class BookRestControllerRTest {
 
     @Mock
     private BookRepository bookRepository;
